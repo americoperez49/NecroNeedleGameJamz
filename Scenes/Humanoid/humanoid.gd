@@ -1,16 +1,19 @@
 extends CharacterBody3D
 @export var spring_arm_pivot:Node3D
 @export var spring_arm:SpringArm3D
+@export var metarig:Node3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+const LERP_VAL =.15
+var mouse_captured:bool = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 func _input(event):
+	if event is InputEventMouseButton and not mouse_captured:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		mouse_captured =true
 	if event is InputEventMouseMotion:
 		spring_arm_pivot.rotate_y(-event.relative.x * .005)
 		spring_arm.rotate_x(-event.relative.y * .005)
@@ -36,6 +39,7 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		metarig.rotation.y =lerp_angle(metarig.rotation.y, atan2(-velocity.x,-velocity.z),LERP_VAL)
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
