@@ -10,6 +10,9 @@ var mouse_captured:bool = false
 var left_arm: HumanoidArm
 var right_arm: HumanoidArm
 
+# can only change mouse capture mode in _input callbacks on web platform!
+var is_first_input: bool = true
+
 
 enum SOCKET_KIND {LEFT_ARM, RIGHT_ARM}
 
@@ -18,18 +21,17 @@ enum SOCKET_KIND {LEFT_ARM, RIGHT_ARM}
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
-
-func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	mouse_captured = true
-
-
 func _input(event):
+	if is_first_input and event is InputEventMouseMotion:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		mouse_captured = true
+		is_first_input = false
+		
 	if mouse_captured and event is InputEventMouseMotion:
 		spring_arm_pivot.rotate_y(-event.relative.x * .005)
 		spring_arm.rotate_x(-event.relative.y * .005)
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/4)
-		pass
+		
 	if event.is_action_pressed("ui_cancel"):
 		if mouse_captured:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

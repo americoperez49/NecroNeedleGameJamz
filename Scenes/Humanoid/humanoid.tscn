@@ -118,11 +118,12 @@ bind/24/pose = Transform3D(-1, -9.31323e-08, 1.39698e-08, -2.98022e-07, 5.66242e
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_18qb5"]
 radius = 0.204694
 
-[node name="humanoid_body" type="CharacterBody3D" node_paths=PackedStringArray("spring_arm_pivot", "spring_arm", "metarig")]
+[node name="humanoid_body" type="CharacterBody3D" node_paths=PackedStringArray("spring_arm_pivot", "spring_arm", "metarig", "skeleton")]
 script = ExtResource("1_dx4dg")
 spring_arm_pivot = NodePath("SpringArmPivot")
 spring_arm = NodePath("SpringArmPivot/SpringArm3D")
 metarig = NodePath("metarig")
+skeleton = NodePath("metarig/Skeleton3D")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
