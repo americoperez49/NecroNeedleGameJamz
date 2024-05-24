@@ -1,11 +1,18 @@
-extends CharacterBody3D
+class_name Humanoid extends CharacterBody3D
 @export var spring_arm_pivot:Node3D
 @export var spring_arm:SpringArm3D
 @export var metarig:Node3D
+@export var skeleton:Skeleton3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const LERP_VAL =.15
 var mouse_captured:bool = false
+var left_arm: HumanoidArm
+var right_arm: HumanoidArm
+
+
+enum SOCKET_KIND {LEFT_ARM, RIGHT_ARM}
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -45,3 +52,29 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+
+# 
+func attach_arm(newArm: HumanoidArm, destinationSocket: SOCKET_KIND):
+	match destinationSocket:
+		SOCKET_KIND.LEFT_ARM:
+			try_detach_arm(left_arm)
+		SOCKET_KIND.RIGHT_ARM:
+			try_detach_arm(right_arm)
+		_: push_error("handler not implemented for this kind of socket")
+	
+	# set new arm node's parent and skeleton; we reset the transform value to identity to undo any local transformations
+	skeleton.add_child(newArm)
+	newArm.transform.origin = Vector3.ZERO
+	newArm.rotation = Vector3.ZERO
+	newArm.scale = Vector3.ONE
+	
+	newArm.set_skeleton(self, skeleton)
+	newArm.on_attached()
+
+
+func try_detach_arm(arm: HumanoidArm):
+	if arm:
+		arm.detach()
+		skeleton.remove_child(arm)
+		arm.on_detached()

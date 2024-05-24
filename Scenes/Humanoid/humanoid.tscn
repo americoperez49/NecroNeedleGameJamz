@@ -1,8 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0087d5rm0jnw"]
+[gd_scene load_steps=9 format=3 uid="uid://b0087d5rm0jnw"]
 
 [ext_resource type="Script" path="res://Scenes/Humanoid/humanoid.gd" id="1_dx4dg"]
-[ext_resource type="PackedScene" uid="uid://dum0clgombpq" path="res://Assets/Mesh/humanoid_arm_l.glb" id="1_lkuqx"]
-[ext_resource type="PackedScene" uid="uid://dmwpboojyujl3" path="res://Assets/Mesh/humanoid_arm_r.glb" id="2_sbj0t"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_feehf"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -316,10 +314,6 @@ bones/24/scale = Vector3(1, 1, 1)
 [node name="Cylinder_001" type="MeshInstance3D" parent="metarig/Skeleton3D"]
 mesh = SubResource("ArrayMesh_qg5sk")
 skin = SubResource("Skin_8x17j")
-
-[node name="humanoid_arm_l" parent="metarig/Skeleton3D" instance=ExtResource("1_lkuqx")]
-
-[node name="humanoid_arm_r" parent="metarig/Skeleton3D" instance=ExtResource("2_sbj0t")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00484, 0)

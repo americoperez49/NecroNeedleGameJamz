@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dq163uokga36h"]
+
+[ext_resource type="PackedScene" uid="uid://dmwpboojyujl3" path="res://Assets/Mesh/humanoid_arm_r.glb" id="1_7d7wn"]
+[ext_resource type="Script" path="res://Scenes/Humanoid/humanoidarm.gd" id="2_6xjbu"]
+
+[node name="humanoid_arm_r" node_paths=PackedStringArray("_mesh") instance=ExtResource("1_7d7wn")]
+script = ExtResource("2_6xjbu")
+_mesh = NodePath("Cylinder_003")
+arm_kind = 1
