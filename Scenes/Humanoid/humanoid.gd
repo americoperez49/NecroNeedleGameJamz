@@ -17,16 +17,26 @@ enum SOCKET_KIND {LEFT_ARM, RIGHT_ARM}
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+
+
+func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	mouse_captured = true
+
+
 func _input(event):
-	if event is InputEventMouseButton and not mouse_captured:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		mouse_captured =true
-	if event is InputEventMouseMotion:
+	if mouse_captured and event is InputEventMouseMotion:
 		spring_arm_pivot.rotate_y(-event.relative.x * .005)
 		spring_arm.rotate_x(-event.relative.y * .005)
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/4)
 		pass
-	
+	if event.is_action_pressed("ui_cancel"):
+		if mouse_captured:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			mouse_captured = false
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			mouse_captured = true
 
 
 func _physics_process(delta):
@@ -54,7 +64,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-# 
+
 func attach_arm(newArm: HumanoidArm, destinationSocket: SOCKET_KIND):
 	match destinationSocket:
 		SOCKET_KIND.LEFT_ARM:
@@ -71,6 +81,7 @@ func attach_arm(newArm: HumanoidArm, destinationSocket: SOCKET_KIND):
 	
 	newArm.set_skeleton(self, skeleton)
 	newArm.on_attached()
+
 
 
 func try_detach_arm(arm: HumanoidArm):
