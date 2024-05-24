@@ -21,6 +21,9 @@ enum SOCKET_KIND {LEFT_ARM, RIGHT_ARM}
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
+func _ready():
+	EventBus.died.connect(died)
+
 func _input(event):
 	if is_first_input and event is InputEventMouseMotion:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -91,3 +94,9 @@ func try_detach_arm(arm: HumanoidArm):
 		arm.detach()
 		skeleton.remove_child(arm)
 		arm.on_detached()
+
+
+func died(object):
+	if object == self:
+		print("Player died. Do something with this info")
+	pass
