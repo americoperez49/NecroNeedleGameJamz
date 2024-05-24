@@ -7,7 +7,12 @@ extends Node3D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	health = MAX_HEALTH
-	pass # Replace with function body.
+	
+#region DEBUG CODE TO TEST
+	#await get_tree().create_timer(3).timeout
+	#take_damage(4)
+#endregion
+
 
 func take_damage(damage_dealt)->void:
 	health -= damage_dealt

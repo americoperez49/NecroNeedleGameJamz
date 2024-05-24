@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0087d5rm0jnw"]
+[gd_scene load_steps=10 format=3 uid="uid://b0087d5rm0jnw"]
 
 [ext_resource type="Script" path="res://Scenes/Humanoid/humanoid.gd" id="1_dx4dg"]
+[ext_resource type="PackedScene" uid="uid://c0fo8v86cjydx" path="res://Scenes/HealthComponent/health_component.tscn" id="2_wfn5h"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_feehf"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -327,3 +328,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65825, 0)
 spring_length = 3.0
 
 [node name="Camera3D" type="Camera3D" parent="SpringArmPivot/SpringArm3D"]
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_wfn5h")]
+MAX_HEALTH = 3
