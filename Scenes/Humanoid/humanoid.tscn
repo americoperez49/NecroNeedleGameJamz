@@ -1,7 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://b0087d5rm0jnw"]
+[gd_scene load_steps=9 format=3 uid="uid://b0087d5rm0jnw"]
 
-[ext_resource type="PackedScene" uid="uid://dum0clgombpq" path="res://Assets/Mesh/humanoid_arm_l.glb" id="1_lkuqx"]
-[ext_resource type="PackedScene" uid="uid://dmwpboojyujl3" path="res://Assets/Mesh/humanoid_arm_r.glb" id="2_sbj0t"]
+[ext_resource type="Script" path="res://Scenes/Humanoid/humanoid.gd" id="1_dx4dg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_feehf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_7wyxg"]
+sky_material = SubResource("ProceduralSkyMaterial_feehf")
+
+[sub_resource type="Environment" id="Environment_2jqgr"]
+background_mode = 2
+sky = SubResource("Sky_7wyxg")
+tonemap_mode = 2
+glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1k0yy"]
 
@@ -106,11 +118,24 @@ bind/24/pose = Transform3D(-1, -9.31323e-08, 1.39698e-08, -2.98022e-07, 5.66242e
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_18qb5"]
 radius = 0.204694
 
-[node name="humanoid_body" type="CharacterBody3D"]
+[node name="humanoid_body" type="CharacterBody3D" node_paths=PackedStringArray("spring_arm_pivot", "spring_arm", "metarig", "skeleton")]
+script = ExtResource("1_dx4dg")
+spring_arm_pivot = NodePath("SpringArmPivot")
+spring_arm = NodePath("SpringArmPivot/SpringArm3D")
+metarig = NodePath("metarig")
+skeleton = NodePath("metarig/Skeleton3D")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2jqgr")
 
 [node name="metarig" type="Node3D" parent="."]
 
 [node name="Skeleton3D" type="Skeleton3D" parent="metarig"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 bones/0/name = "spine"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 0.968339, -0.249639, 0, 0.249639, 0.968339, 0, 1.0099, -0.0552)
@@ -291,10 +316,14 @@ bones/24/scale = Vector3(1, 1, 1)
 mesh = SubResource("ArrayMesh_qg5sk")
 skin = SubResource("Skin_8x17j")
 
-[node name="humanoid_arm_l" parent="metarig/Skeleton3D" instance=ExtResource("1_lkuqx")]
-
-[node name="humanoid_arm_r" parent="metarig/Skeleton3D" instance=ExtResource("2_sbj0t")]
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00484, 0)
 shape = SubResource("CapsuleShape3D_18qb5")
+
+[node name="SpringArmPivot" type="Node3D" parent="."]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65825, 0)
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="SpringArmPivot/SpringArm3D"]
