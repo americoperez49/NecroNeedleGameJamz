@@ -15,6 +15,10 @@ run/main_scene="res://Assets/SimpleDungeons/Scenes/Demo.scn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+EventBus="*res://Globals/event_bus.gd"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/unidot_importer/plugin.cfg")
